@@ -1,16 +1,14 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../database/client';
 import { StatusCodes } from 'http-status-codes';
 import { UserUpdate } from '../config/interfaces/userInterface';
 
 export class UserService {
-  private prisma = new PrismaClient();
-
   async findAllUsers() {
-    return await this.prisma.user.findMany();
+    return await prisma.user.findMany();
   }
 
   async findUser(id: string) {
-    return await this.prisma.user.findFirst({
+    return await prisma.user.findFirst({
       where: {
         id: id,
       },
@@ -18,7 +16,7 @@ export class UserService {
   }
 
   async updateUser(id: string, { name, password }: UserUpdate) {
-    await this.prisma.user.update({
+    await prisma.user.update({
       where: { id: id },
       data: {
         name,
@@ -32,7 +30,7 @@ export class UserService {
   }
 
   async deleteUser(id: string) {
-    await this.prisma.user.delete({
+    await prisma.user.delete({
       where: {
         id: id,
       },

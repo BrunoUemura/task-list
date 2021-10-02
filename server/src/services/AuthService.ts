@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../database/client';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
@@ -11,29 +11,23 @@ import {
 } from '../config/interfaces/authInterface';
 
 export class AuthService {
-  private prisma = new PrismaClient();
-
   async registerUser({ name, email, password }: UserRegistration) {
-    const userExist = await this.prisma.user.findFirst({
+    const userExist = await prisma.user.findFirst({
       where: {
         email,
       },
     });
-
     if (userExist) {
       throw new BadRequestError('User already registered');
     }
-
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    await this.prisma.user.create({
+    await prisma.user.create({
       data: {
         name,
         email,
         password: hashedPassword,
       },
     });
-
     return {
       status: StatusCodes.CREATED,
       message: 'User registered successfully',
@@ -41,7 +35,7 @@ export class AuthService {
   }
 
   async loginUser({ email, password }: UserLogin) {
-    const user = await this.prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
       where: {
         email,
       },

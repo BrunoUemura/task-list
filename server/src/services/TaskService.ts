@@ -1,16 +1,14 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../database/client';
 import { StatusCodes } from 'http-status-codes';
 import { TitleUpdate } from '../config/interfaces/taskInterface';
 
 export class TaskService {
-  private prisma = new PrismaClient();
-
   async findAllTasks() {
-    return await this.prisma.list.findMany();
+    return await prisma.list.findMany();
   }
 
   async findTask(id: string) {
-    return await this.prisma.list.findFirst({
+    return await prisma.list.findFirst({
       where: {
         id: id,
       },
@@ -18,7 +16,7 @@ export class TaskService {
   }
 
   async createTask(title: string) {
-    await this.prisma.list.create({
+    await prisma.list.create({
       data: {
         title,
       },
@@ -31,7 +29,7 @@ export class TaskService {
   }
 
   async updateTask(id: string, { title, done }: TitleUpdate) {
-    await this.prisma.list.update({
+    await prisma.list.update({
       where: { id: id },
       data: {
         title,
@@ -46,7 +44,7 @@ export class TaskService {
   }
 
   async deleteTask(id: string) {
-    await this.prisma.user.delete({
+    await prisma.user.delete({
       where: {
         id: id,
       },
