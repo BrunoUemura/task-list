@@ -5,7 +5,9 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node-dev --transpileOnly --ignore-watch node_modules src/server.ts"
+    "migrations": "npx prisma migrate dev --name init",
+    "dev": "ts-node-dev --ignore-watch node_modules src/server.ts",
+    "start": "tsc && node dist/server.js"
   },
   "dependencies": {
     "@prisma/client": "^3.1.1",
