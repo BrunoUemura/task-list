@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 
-import { LoginContainer, LoginLogo, LoginForm } from "./styles";
-
 import { MdEmail, MdLock } from "react-icons/md";
 import { HiEye, HiEyeOff } from "react-icons/hi";
+
+import { LoginContainer, LoginLogo, LoginForm } from "./styles";
+import { Authentication } from "../../services/authentication";
+import Register from "../register";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -13,6 +15,53 @@ const Login = () => {
   const handleEyeClick = (e: any) => {
     e.preventDefault();
     setShow(!show);
+  };
+
+  const clearFields = (): void => {
+    setEmail("");
+    setPassword("");
+  };
+
+  const incompleteFields = (): void => {
+    alert("Incorrect email or password.");
+    clearFields();
+  };
+
+  const authenticationSucceeded = (token: string): void => {
+    localStorage.setItem("token", token);
+    alert("Authentication succeeded!");
+    // router.push("/home");
+  };
+
+  const authenticationFailed = (): void => {
+    alert("Authentication failed! Verify email and password.");
+    clearFields();
+    // router.push("/login");
+  };
+
+  const handleLogin = async () => {
+    if (email === "" || password === "") {
+      incompleteFields();
+      return;
+    }
+
+    try {
+      const token: string = await Authentication.logIn({
+        email,
+        password,
+      });
+      if (token) {
+        authenticationSucceeded(token);
+      } else {
+        authenticationFailed();
+      }
+    } catch (err) {
+      authenticationFailed();
+    }
+  };
+
+  const handleRegister = () => {
+    return <Register />;
   };
 
   return (
@@ -50,9 +99,13 @@ const Login = () => {
             )}
           </div>
         </div>
-        <button type="submit">Sign in</button>
+        <button type="submit" onClick={handleLogin}>
+          Sign in
+        </button>
         <h4>Not registered yet?</h4>
-        <button type="submit">Sign up</button>
+        <button type="submit" onClick={handleRegister}>
+          Sign up
+        </button>
       </LoginForm>
     </LoginContainer>
   );
