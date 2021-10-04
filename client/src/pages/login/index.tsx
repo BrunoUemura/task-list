@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "./login.css";
+
+import { LoginContainer, LoginLogo, LoginForm } from "./styles";
 
 import { MdEmail, MdLock } from "react-icons/md";
 import { HiEye, HiEyeOff } from "react-icons/hi";
@@ -15,14 +16,14 @@ const Login = () => {
   };
 
   return (
-    <div className="login">
-      <div className="login-logo">
+    <LoginContainer>
+      <LoginLogo>
         <img
           src="https://images-na.ssl-images-amazon.com/images/I/41da3NERJ4L.png"
           alt="Login App"
         />
-      </div>
-      <div className="login-form">
+      </LoginLogo>
+      <LoginForm>
         <h1>Task List</h1>
         <div className="login-input-email">
           <MdEmail />
@@ -52,8 +53,8 @@ const Login = () => {
         <button type="submit">Sign in</button>
         <h4>Not registered yet?</h4>
         <button type="submit">Sign up</button>
-      </div>
-    </div>
+      </LoginForm>
+    </LoginContainer>
   );
 };
 
