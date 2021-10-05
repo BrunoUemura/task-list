@@ -76,8 +76,17 @@ export const LoginForm = styled.div`
     margin-right: 10px;
   }
 
-  button {
+  .button-containers {
     width: 98%;
+
+    h4 {
+      text-align: center;
+    }
+  }
+
+  .signin-button,
+  .signup-button {
+    width: 100%;
     background-color: #202024;
     color: #eff2f5;
     font-weight: 800;

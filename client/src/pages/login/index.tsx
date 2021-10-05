@@ -1,11 +1,13 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from "react";
+
+import { Link, Redirect, useHistory } from "react-router-dom";
 
 import { MdEmail, MdLock } from "react-icons/md";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 
 import { LoginContainer, LoginLogo, LoginForm } from "./styles";
 import { Authentication } from "../../services/authentication";
-import Register from "../register";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -27,10 +29,10 @@ const Login = () => {
     clearFields();
   };
 
-  const authenticationSucceeded = (token: string): void => {
+  const authenticationSucceeded = (token: string) => {
     localStorage.setItem("token", token);
     alert("Authentication succeeded!");
-    // router.push("/home");
+    document.location.href = "/";
   };
 
   const authenticationFailed = (): void => {
@@ -58,10 +60,6 @@ const Login = () => {
     } catch (err) {
       authenticationFailed();
     }
-  };
-
-  const handleRegister = () => {
-    return <Register />;
   };
 
   return (
@@ -99,13 +97,17 @@ const Login = () => {
             )}
           </div>
         </div>
-        <button type="submit" onClick={handleLogin}>
-          Sign in
-        </button>
-        <h4>Not registered yet?</h4>
-        <button type="submit" onClick={handleRegister}>
-          Sign up
-        </button>
+        <div className="button-containers">
+          <button type="submit" className="signin-button" onClick={handleLogin}>
+            Sign in
+          </button>
+          <h4>Not registered yet?</h4>
+          <Link to="/register">
+            <button type="submit" className="signup-button">
+              Sign up
+            </button>
+          </Link>
+        </div>
       </LoginForm>
     </LoginContainer>
   );

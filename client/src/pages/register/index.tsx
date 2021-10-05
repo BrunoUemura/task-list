@@ -5,6 +5,8 @@ import { MdEmail, MdLock } from "react-icons/md";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 
 import { RegisterContainer, RegisterForm, RegisterLogo } from "./styles";
+import { Link } from "react-router-dom";
+import { Authentication } from "../../services/authentication";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -15,6 +17,50 @@ const Register = () => {
   const handleEyeClick = (e: any) => {
     e.preventDefault();
     setShow(!show);
+  };
+
+  const clearFields = (): void => {
+    setName("");
+    setEmail("");
+    setPassword("");
+  };
+
+  const incompleteFields = (): void => {
+    alert("Please complete all required text fields");
+    clearFields();
+  };
+
+  const authenticationSucceeded = (): void => {
+    alert("Registration succeeded");
+    document.location.href = "/login";
+  };
+
+  const authenticationFailed = (): void => {
+    alert("Authentication failed! Verify email and password.");
+    clearFields();
+    // router.push("/login");
+  };
+
+  const handleRegister = async () => {
+    if (name === "" || email === "" || password === "") {
+      incompleteFields();
+      return;
+    }
+
+    try {
+      const data = await Authentication.register({
+        name,
+        email,
+        password,
+      });
+      if (data) {
+        authenticationSucceeded();
+      } else {
+        authenticationFailed();
+      }
+    } catch (err) {
+      authenticationFailed();
+    }
   };
 
   return (
@@ -62,9 +108,21 @@ const Register = () => {
             )}
           </div>
         </div>
-        <button type="submit">Sign up</button>
-        <h4>Already registered?</h4>
-        <button type="submit">Sign in</button>
+        <div className="button-containers">
+          <button
+            type="submit"
+            className="signup-button"
+            onClick={handleRegister}
+          >
+            Sign up
+          </button>
+          <h4>Already registered?</h4>
+          <Link to="/login">
+            <button type="submit" className="signin-button">
+              Sign in
+            </button>
+          </Link>
+        </div>
       </RegisterForm>
     </RegisterContainer>
   );
