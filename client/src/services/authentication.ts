@@ -1,15 +1,10 @@
 import api from "./baseURL";
 import jwt_decode from "jwt-decode";
-import {
-  UserLogin,
-  UserRegistration,
-} from "../config/interfaces/authInterface";
+import { IUserLogin, IUserRegistration } from "../config/interfaces";
 import axios from "axios";
 
 export class Authentication {
-  static async register({ name, email, password }: UserRegistration) {
-    console.log(api);
-
+  static async register({ name, email, password }: IUserRegistration) {
     try {
       const { data } = await axios.post(
         "http://localhost:4000/api/v1/auth/register",
@@ -25,7 +20,7 @@ export class Authentication {
     }
   }
 
-  static async logIn({ email, password }: UserLogin) {
+  static async logIn({ email, password }: IUserLogin) {
     try {
       const { data }: any = await axios.post(
         "http://localhost:4000/api/v1/auth/login",

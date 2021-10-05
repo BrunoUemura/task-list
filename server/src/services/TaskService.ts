@@ -4,55 +4,90 @@ import { TitleUpdate } from '../config/interfaces/taskInterface';
 
 export class TaskService {
   async findAllTasks() {
-    return await prisma.list.findMany();
+    try {
+      return await prisma.list.findMany();
+    } catch (error: any) {
+      return {
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+        message: error.message,
+      };
+    }
   }
 
   async findTask(id: string) {
-    return await prisma.list.findFirst({
-      where: {
-        id: id,
-      },
-    });
+    try {
+      return await prisma.list.findFirst({
+        where: {
+          id: id,
+        },
+      });
+    } catch (error: any) {
+      return {
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+        message: error.message,
+      };
+    }
   }
 
   async createTask(title: string) {
-    await prisma.list.create({
-      data: {
-        title,
-      },
-    });
+    try {
+      await prisma.list.create({
+        data: {
+          title,
+        },
+      });
 
-    return {
-      status: StatusCodes.CREATED,
-      message: 'Task created successfully',
-    };
+      return {
+        status: StatusCodes.CREATED,
+        message: 'Task created successfully',
+      };
+    } catch (error: any) {
+      return {
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+        message: error.message,
+      };
+    }
   }
 
   async updateTask(id: string, { title, done }: TitleUpdate) {
-    await prisma.list.update({
-      where: { id: id },
-      data: {
-        title,
-        done,
-      },
-    });
+    try {
+      await prisma.list.update({
+        where: { id: id },
+        data: {
+          title,
+          done,
+        },
+      });
 
-    return {
-      status: StatusCodes.OK,
-      message: 'Task updated successfully',
-    };
+      return {
+        status: StatusCodes.OK,
+        message: 'Task updated successfully',
+      };
+    } catch (error: any) {
+      return {
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+        message: error.message,
+      };
+    }
   }
 
   async deleteTask(id: string) {
-    await prisma.user.delete({
-      where: {
-        id: id,
-      },
-    });
+    try {
+      await prisma.list.delete({
+        where: {
+          id,
+        },
+      });
 
-    return {
-      status: StatusCodes.OK,
-      message: 'Task deleted successfully',
-    };
+      return {
+        status: StatusCodes.OK,
+        message: 'Task deleted successfully',
+      };
+    } catch (error: any) {
+      return {
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+        message: error.message,
+      };
+    }
   }
 }
