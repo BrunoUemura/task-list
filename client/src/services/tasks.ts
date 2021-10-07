@@ -1,11 +1,11 @@
-import api from "./baseURL";
-import { ITasksUpdate } from "../config/interfaces";
-import axios from "axios";
+import api from './baseURL';
+import { ITasksUpdate } from '../config/interfaces';
+import axios from 'axios';
 
 export class Tasks {
   static async getAllTasks() {
     try {
-      const { data } = await axios.get("http://localhost:4000/api/v1/tasks");
+      const { data } = await axios.get('http://localhost:4000/api/v1/tasks');
       return data;
     } catch (error) {
       console.log(error);
@@ -15,7 +15,7 @@ export class Tasks {
   static async createTask(title: string, userId: string, token: string) {
     try {
       await axios.post(
-        "http://localhost:4000/api/v1/tasks",
+        'http://localhost:4000/api/v1/tasks',
         {
           title,
           userId,
@@ -24,7 +24,7 @@ export class Tasks {
           headers: {
             authorization: token,
           },
-        }
+        },
       );
     } catch (error) {
       console.log(error);
@@ -43,7 +43,7 @@ export class Tasks {
           headers: {
             authorization: token,
           },
-        }
+        },
       );
     } catch (error) {
       console.log(error);
