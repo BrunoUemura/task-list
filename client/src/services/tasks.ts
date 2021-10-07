@@ -12,12 +12,13 @@ export class Tasks {
     }
   }
 
-  static async createTask(title: string, token: string) {
+  static async createTask(title: string, userId: string, token: string) {
     try {
       await axios.post(
         "http://localhost:4000/api/v1/tasks",
         {
           title,
+          userId,
         },
         {
           headers: {

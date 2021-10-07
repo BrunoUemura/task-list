@@ -1,6 +1,6 @@
 import prisma from '../database/client';
 import { StatusCodes } from 'http-status-codes';
-import { TitleUpdate } from '../config/interfaces/taskInterface';
+import { ITaskCreate, ITaskUpdate } from '../config/interfaces';
 
 export class TaskService {
   async findAllTasks() {
@@ -29,11 +29,12 @@ export class TaskService {
     }
   }
 
-  async createTask(title: string) {
+  async createTask({ title, userId }: ITaskCreate) {
     try {
       await prisma.list.create({
         data: {
           title,
+          userId,
         },
       });
 
@@ -49,7 +50,7 @@ export class TaskService {
     }
   }
 
-  async updateTask(id: string, { title, done }: TitleUpdate) {
+  async updateTask(id: string, { title, done }: ITaskUpdate) {
     try {
       await prisma.list.update({
         where: { id: id },

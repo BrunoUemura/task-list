@@ -5,13 +5,10 @@ import { StatusCodes } from 'http-status-codes';
 import { UnauthorizedError } from '../errors/UnauthorizedError';
 import { NotFoundError } from '../errors/NotFoundError';
 import { BadRequestError } from '../errors/BadRequestError';
-import {
-  UserRegistration,
-  UserLogin,
-} from '../config/interfaces/authInterface';
+import { IUserRegistration, IUserLogin } from '../config/interfaces';
 
 export class AuthService {
-  async registerUser({ name, email, password }: UserRegistration) {
+  async registerUser({ name, email, password }: IUserRegistration) {
     const userExist = await prisma.user.findFirst({
       where: {
         email,
@@ -34,7 +31,7 @@ export class AuthService {
     };
   }
 
-  async loginUser({ email, password }: UserLogin) {
+  async loginUser({ email, password }: IUserLogin) {
     const user = await prisma.user.findFirst({
       where: {
         email,

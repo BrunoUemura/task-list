@@ -25,9 +25,9 @@ export class TaskController {
 
   static async createTask(req: Request, res: Response, next: NextFunction) {
     try {
-      const { title } = req.body;
+      const { title, userId } = req.body;
       const taskService = new TaskService();
-      const task = await taskService.createTask(title);
+      const task = await taskService.createTask({ title, userId });
       return res.json(task);
     } catch (error) {
       next(error);

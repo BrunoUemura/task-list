@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { ITasksType } from "../../config/interfaces";
+import { Authentication } from "../../services/authentication";
 import { Tasks } from "../../services/tasks";
 
 import {
@@ -24,16 +25,18 @@ const Home = () => {
     })();
   }, [newTask]);
 
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM2OTgzOGRmLTE2MjUtNGIxZC04NGFlLTJmMTE1NTcyNGQzZSIsImVtYWlsIjoiYnJ1bm8udWVtdXJhMUBnbWFpbC5jb20iLCJpYXQiOjE2MzMzODg1MDYsImV4cCI6MTYzMzM5MjEwNn0.4LMAQQu5h6MzlSRfGr4Dik-G2CuZIhGDgmfuiFBWxJ0";
+  // const token =
+  //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM2OTgzOGRmLTE2MjUtNGIxZC04NGFlLTJmMTE1NTcyNGQzZSIsImVtYWlsIjoiYnJ1bm8udWVtdXJhMUBnbWFpbC5jb20iLCJpYXQiOjE2MzMzODg1MDYsImV4cCI6MTYzMzM5MjEwNn0.4LMAQQu5h6MzlSRfGr4Dik-G2CuZIhGDgmfuiFBWxJ0";
 
   const handleCreateTask = async (): Promise<void> => {
     if (task === "") {
       return;
     }
 
-    // const token = localStorage.getItem("token");
-    await Tasks.createTask(task, token);
+    const userId: string = Authentication.checkUserSession();
+    const token = localStorage.getItem("token");
+
+    await Tasks.createTask(task, userId, token);
     setNewTask(true);
     setTask("");
   };
@@ -43,13 +46,13 @@ const Home = () => {
     title: string,
     done?: boolean
   ): Promise<void> => {
-    // const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     await Tasks.deleteTask(id, token);
     setNewTask(true);
   };
 
   const handleCompleteTask = async (id: string) => {
-    // const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     const chkBox: any = document.querySelector(".checkbox");
     const done = chkBox.checked;
 
@@ -58,7 +61,7 @@ const Home = () => {
   };
 
   const handleDeleteTask = async (id: string): Promise<void> => {
-    // const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     await Tasks.deleteTask(id, token);
     setNewTask(true);
   };

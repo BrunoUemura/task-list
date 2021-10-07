@@ -1,6 +1,6 @@
 import prisma from '../database/client';
 import { StatusCodes } from 'http-status-codes';
-import { UserUpdate } from '../config/interfaces/userInterface';
+import { IUserUpdate } from '../config/interfaces';
 
 export class UserService {
   async findAllUsers() {
@@ -15,7 +15,7 @@ export class UserService {
     });
   }
 
-  async updateUser(id: string, { name, password }: UserUpdate) {
+  async updateUser(id: string, { name, password }: IUserUpdate) {
     await prisma.user.update({
       where: { id: id },
       data: {

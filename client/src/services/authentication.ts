@@ -53,7 +53,7 @@ export class Authentication {
     }
   }
 
-  static checkUserSession(page: string) {
+  static checkUserSession() {
     /**
      * JWT token is needed in order to make a POST, PUT or DELETE request.
      * Also this token expires in 1 hour. So you will need to Sign in again to generate a new one.
@@ -63,7 +63,7 @@ export class Authentication {
 
     if (localStorage.getItem("token") === null) {
       alert("Your need to sign in to proceed!");
-      //   router.push("/login");
+      document.location.href = "/login";
       return;
     }
 
@@ -76,14 +76,10 @@ export class Authentication {
     if (exp < currentTimestamp) {
       alert("Your session expired, Sign in again to continue!");
       localStorage.removeItem("token");
-      //   router.push("/login");
+      document.location.href = "/login";
       return;
     }
 
-    if (page) {
-      //   router.push(`/${page}`);
-      return id;
-    }
     return id;
   }
 }
